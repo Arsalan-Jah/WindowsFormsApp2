@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,6 +17,22 @@ namespace WindowsFormsApp2
         public Form1()
         {
             InitializeComponent();
+        }
+        string cs = ConfigurationManager.ConnectionStrings["dbcs"].ConnectionString;
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SqlConnection con = new SqlConnection(cs);
+            string query = "insert into Roles values (@role_name)";
+            SqlCommand cmd = new SqlCommand(query, con);
+            cmd.Parameters.AddWithValue("@role_name", textBox1.Text);
+            //cmd.Parameters.AddWithValue("@role_name", textBox1.Text);
+            con.Open();
+            SqlDataReader dr = cmd.ExecuteReader();
+            if (dr.HasRows == true)
+            {
+                MessageBox.Show("Inserted ");         
+                    }
         }
     }
 }
